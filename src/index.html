@@ -6,12 +6,31 @@
   <title>Demo</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/base.css" />
-  <script src="./scripts/components/index.js"></script>
 </head>
 
 <body>
-  <h1>EmailsInput component</h1>
+  <div class="form">
+    <div class="form__header">
+      <h1>
+        Share an amazing board with others
+      </h1>
+    </div>
 
+    <div class="form__body">
+      <div id="emails-input"></div>
+    </div>
+
+    <div class="form__footer">
+      <button> Add email </button>
+      <button> Get emails count </button>
+    </div>
+  </div>
 </body>
+
+<script src="./scripts/components/index.js"></script>
+<script>
+  var inputContainerNode = document.querySelector('#emails-input');
+  var emailsInput = new EmailsInput(inputContainerNode, { });
+</script>
 
 </html>
