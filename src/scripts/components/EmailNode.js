@@ -4,12 +4,14 @@ export default class EmailNode {
       {
         containerClassName: 'email-node',
         contentClassName: 'email-node__content',
-        removeBtnClassName: 'email-node__remove-email'
+        removeBtnClassName: 'email-node__remove-email',
+        invalidContainerClassName: 'email-node--invalid'
       }, options)
 
     this.value = value
     this.containerNode = document.createElement('div')
-    this.containerNode.classList.add(this.options.containerClassName)
+    const containerClassName = this.isValid ? this.options.containerClassName : this.options.invalidContainerClassName
+    this.containerNode.classList.add(containerClassName)
 
     this.contentNode = document.createElement('div')
     this.contentNode.classList.add(this.options.contentClassName)
