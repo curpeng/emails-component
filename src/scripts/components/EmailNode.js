@@ -30,7 +30,7 @@ export default class EmailNode {
   }
 
   _buildRemoveBtn () {
-    const button = document.createElement('button')
+    const button = document.createElement('div')
     button.classList.add(this.options.removeBtnClassName)
     button.addEventListener('click', (_event) => {
       this.containerNode.remove()

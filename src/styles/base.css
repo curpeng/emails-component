@@ -1,19 +1,55 @@
-body {
-  font-family: 'Open Sans', sans-serif;
+
+.form {
+  width: 60%;
+  margin: 2rem auto;
+
+  min-width: 540px;
+
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  background-color: #F8F8F7;
 }
 
-h1 {
-  color: hotpink;
+.form__caption {
+  font-size: 20px;
+  line-height: 27px;
+  padding-top: 32px;
+  padding-bottom: 24px;
 }
 
-#emails-input{
-  min-height: 300px;
-  min-width: 300px;
-
+.form__caption, .form__body, .form__footer {
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
-.email-node__remove-email{
-  background-color: blue;
-  min-width: 20px;
-  min-height: 20px;
+.form__body {
+  height: 100px;
+  margin-bottom: 24px;
+}
+
+.form__footer {
+  background-color: #FFF;
+  height: 76px;
+  padding-top: 20px;
+}
+
+button {
+  background: #4262ff;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  text-align: center;
+  padding: 8px 16px;
+
+  margin-right: 16px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+  color: #ffffff;
 }

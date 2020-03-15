@@ -5,7 +5,9 @@ export default class EmailsInput {
     this.containerNode = containerNode
     this.options = Object.assign(
       {
-        currentNodeClassName: 'current-node'
+        placeholder: 'Add more people',
+        containerClassName: 'emails-input',
+        currentNodeClassName: 'emails-input__current-node'
       }, options)
 
     this.__listeners = Object.freeze({
@@ -19,7 +21,7 @@ export default class EmailsInput {
     this.containerNode.addEventListener('click', () => {
       this.currentNode.focus()
     })
-
+    this.containerNode.classList.add(this.options.containerClassName)
     this.containerNode.appendChild(this.currentNode)
   }
 
@@ -36,6 +38,8 @@ export default class EmailsInput {
   __buildNode () {
     const input = document.createElement('input')
     input.setAttribute('autocomplete', 'off')
+    input.setAttribute('placeholder', this.options.placeholder)
+    input.classList.add(this.options.currentNodeClassName)
     input.classList.add(this.options.currentNodeClassName)
 
     for (const eventName in this.__listeners) {
