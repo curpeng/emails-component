@@ -12,7 +12,8 @@ export default class EmailsInput {
 
     this.__listeners = Object.freeze({
       keydown: this.__keyDownHandler.bind(this),
-      blur: this.__blurHandler.bind(this)
+      blur: this.__blurHandler.bind(this),
+      paste: this.__pasteHandler.bind(this)
     })
 
     this.values = []
@@ -64,6 +65,15 @@ export default class EmailsInput {
 
   __blurHandler (_event) {
     if (this.currentNode.value.trim().length !== 0) { this.addValue(this.currentNode.value) }
+  }
+
+  __pasteHandler (event) {
+    event.preventDefault()
+
+    const paste = (event.clipboardData || window.clipboardData).getData('text')
+    const pastedValues = paste.split(',')
+
+    pastedValues.forEach(value => { this.addValue(value) })
   }
 
   __removeLastValue () {
