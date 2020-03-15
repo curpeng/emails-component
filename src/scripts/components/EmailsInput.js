@@ -26,7 +26,7 @@ export default class EmailsInput {
     this.containerNode.appendChild(this.currentNode)
   }
 
-  addValue (value) {
+  addEmail (value) {
     if (value.trim().length === 0) { return }
 
     const emailNode = new EmailNode(value, this.lastEmailNode, null, { onRemove: this.__removeEmailNode.bind(this) })
@@ -66,7 +66,7 @@ export default class EmailsInput {
       node = node.prev
     }
 
-    emails.forEach(this.addValue.bind(this))
+    emails.forEach(this.addEmail.bind(this))
   }
 
   __buildNode () {
@@ -87,7 +87,7 @@ export default class EmailsInput {
   __keyDownHandler (event) {
     if (event.keyCode === 188 || event.keyCode === 13) {
       event.preventDefault()
-      this.addValue(this.currentNode.value)
+      this.addEmail(this.currentNode.value)
     } else {
       // a user has already cleared the whole input and clicks backspace key
       if (event.keyCode === 8 && this.currentNode.value.length === 0) {
@@ -98,7 +98,7 @@ export default class EmailsInput {
   }
 
   __blurHandler (_event) {
-    if (this.currentNode.value.trim().length !== 0) { this.addValue(this.currentNode.value) }
+    if (this.currentNode.value.trim().length !== 0) { this.addEmail(this.currentNode.value) }
   }
 
   __pasteHandler (event) {
@@ -107,7 +107,7 @@ export default class EmailsInput {
     const paste = (event.clipboardData || window.clipboardData).getData('text')
     const pastedValues = paste.split(',')
 
-    pastedValues.forEach(value => { this.addValue(value) })
+    pastedValues.forEach(value => { this.addEmail(value) })
   }
 
   __onChange () {

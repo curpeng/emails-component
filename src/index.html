@@ -10,12 +10,12 @@
 </head>
 
 <body>
-  <div class="form">
+  <div class="form" id="form1">
     <div class="form__caption">
       Share an amazing board with others
     </div>
     <div class="form__body">
-      <div id="emails-input"></div>
+      <div id="emails-input1"></div>
     </div>
 
     <div class="form__footer">
@@ -23,31 +23,61 @@
       <button class="email-amount"> Get emails count </button>
     </div>
   </div>
+
+    <div class="form" id="form2">
+      <div class="form__caption">
+        Board 2
+      </div>
+      <div class="form__body" style="height:200px">
+        <div id="emails-input2"></div>
+      </div>
+
+      <div class="form__footer">
+        <button class="add-email"> Add email </button>
+        <button class="email-amount"> Get emails count </button>
+      </div>
+    </div>
 </body>
 
 <script src="./scripts/components/index.js"></script>
 <script>
-  var inputContainerNode = document.querySelector('#emails-input');
-  var emailsInput = new EmailsInput(inputContainerNode, { onChange: (emails) => { console.log('emails', emails)} });
-  emailsInput.setEmails(['test@gmail.com', 'hi@yahoo.com'])
-
-  var addEmailBtn = document.querySelector('.add-email')
-
-  addEmailBtn.addEventListener('click', () => {
-    var email = [
+  const randomEmail = () => {
+    return [
       Math.random().toString(36).substring(2, 15),
       '@',
       Math.random().toString(36).substring(2, 5),
       ".com"
     ].join('')
+  }
 
-    emailsInput.addValue(email);
-  });
+  const addEmail = (node) => { node.addEmail(randomEmail()) }
+  const emailCount = (node) => { alert(node.emails({ onlyValid: true }).length) }
 
-  var emailAmountBtn = document.querySelector('.email-amount')
-  emailAmountBtn.addEventListener('click', () => {
-    alert(emailsInput.emails({onlyValid: true}).length);
-  });
+  const container1 = document.querySelector('#emails-input1');
+  const emailsInput1 = new EmailsInput(container1, { onChange: (emails) => { console.log('emails', emails) } });
+  emailsInput1.setEmails(['test@gmail.com', 'hi@yahoo.com'])
+
+  const container2 = document.querySelector('#emails-input2');
+  const emailsInput2 = new EmailsInput(container2, { onChange: (emails) => { console.log('emails', emails) } });
+  let emails = []
+
+  for (let i = 0; i < 20; i++) {
+    emails.push(randomEmail())
+  }
+
+  emailsInput2.setEmails(emails)
+
+  const addEmailBtn1 = document.querySelector('#form1 .add-email')
+  addEmailBtn1.addEventListener('click', () => { addEmail(emailsInput1) })
+
+  const addEmailBtn2 = document.querySelector('#form2 .add-email')
+  addEmailBtn2.addEventListener('click', () => { addEmail(emailsInput2) })
+
+  const emailAmountBtn1 = document.querySelector('#form1 .email-amount')
+  emailAmountBtn1.addEventListener('click', () => { emailCount(emailsInput1) })
+
+  const emailAmountBtn2 = document.querySelector('#form2 .email-amount')
+  emailAmountBtn2.addEventListener('click', () => { emailCount(emailsInput2) })
+
 </script>
-
 </html>

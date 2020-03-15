@@ -7,7 +7,7 @@ describe('EmailsInput', () => {
     expect(component).toBeTruthy()
   })
 
-  describe('addValue', () => {
+  describe('addEmail', () => {
     beforeEach(() => {
       document.body.innerHTML = "<div id='test'></div>"
     })
@@ -21,7 +21,7 @@ describe('EmailsInput', () => {
       expect(inputContainerNode.querySelectorAll(`.${currentNodeClassName}`).length === 1).toBeTruthy()
 
       const newEmail = 'test@gmail.com '
-      component.addValue(newEmail)
+      component.addEmail(newEmail)
 
       const htmlEl = inputContainerNode.querySelector('.email-node__content')
 
