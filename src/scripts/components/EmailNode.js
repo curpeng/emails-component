@@ -1,14 +1,17 @@
 export default class EmailNode {
-  constructor (value, options) {
+  constructor (value, prev, next, options) {
     this.options = Object.assign(
       {
         containerClassName: 'email-node',
         contentClassName: 'email-node__content',
         removeBtnClassName: 'email-node__remove-email',
+        onRemove: (emailNode) => {},
         invalidContainerClassName: 'email-node--invalid'
       }, options)
 
     this.value = value
+    this.prev = prev
+    this.next = next
     this.containerNode = document.createElement('div')
     const containerClassName = this.isValid ? this.options.containerClassName : this.options.invalidContainerClassName
     this.containerNode.classList.add(containerClassName)
@@ -17,7 +20,7 @@ export default class EmailNode {
     this.contentNode.classList.add(this.options.contentClassName)
     this.contentNode.textContent = this.value
 
-    this.removeBtnNode = this._buildRemoveBtn()
+    this.removeBtnNode = this.__buildRemoveBtn()
 
     this.containerNode.appendChild(this.contentNode)
     this.containerNode.appendChild(this.removeBtnNode)
@@ -31,12 +34,10 @@ export default class EmailNode {
     return this.value.indexOf('@') !== -1
   }
 
-  _buildRemoveBtn () {
+  __buildRemoveBtn () {
     const button = document.createElement('div')
     button.classList.add(this.options.removeBtnClassName)
-    button.addEventListener('click', (_event) => {
-      this.containerNode.remove()
-    })
+    button.addEventListener('click', (_event) => { this.options.onRemove(this) })
     return button
   }
 }

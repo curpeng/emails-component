@@ -7,7 +7,8 @@ export default class EmailsInput {
       {
         placeholder: 'Add more people',
         containerClassName: 'emails-input',
-        currentNodeClassName: 'emails-input__current-node'
+        currentNodeClassName: 'emails-input__current-node',
+        onChange: (newValues) => { }
       }, options)
 
     this.__listeners = Object.freeze({
@@ -16,12 +17,11 @@ export default class EmailsInput {
       paste: this.__pasteHandler.bind(this)
     })
 
-    this.values = []
+    this.values = {}
+    this.lastEmailNode = null
     this.currentNode = this.__buildNode()
 
-    this.containerNode.addEventListener('click', () => {
-      this.currentNode.focus()
-    })
+    this.containerNode.addEventListener('click', () => { this.currentNode.focus() })
     this.containerNode.classList.add(this.options.containerClassName)
     this.containerNode.appendChild(this.currentNode)
   }
@@ -29,22 +29,44 @@ export default class EmailsInput {
   addValue (value) {
     if (value.trim().length === 0) { return }
 
-    const emailNode = new EmailNode(value)
+    const emailNode = new EmailNode(value, this.lastEmailNode, null, { onRemove: this.__removeEmailNode.bind(this) })
 
-    this.values.push(emailNode)
+    if (this.lastEmailNode) {
+      this.lastEmailNode.next = emailNode
+    }
+
+    this.values[value] = emailNode
     this.containerNode.insertBefore(emailNode.htmlNode, this.containerNode.lastChild)
+
+    this.lastEmailNode = emailNode
     this.currentNode.value = ''
+
+    this.__onChange()
   }
 
   emails ({ onlyValid = false }) {
-    const nodes = onlyValid ? this.values.filter((emailNode) => emailNode.isValid) : this.values
-    return nodes.map((emailNode) => (emailNode.value))
+    const result = []
+    let node = this.lastEmailNode
+
+    while (node !== null) {
+      if (node && (!onlyValid || node.isValid)) {
+        result.unshift(node.value)
+      }
+      node = node.prev
+    }
+
+    return result
   }
 
   setEmails (emails) {
-    this.values.forEach(node => { node.htmlNode.remove() })
-    this.values = []
-    emails.forEach((email) => this.addValue(email))
+    let node = this.lastEmailNode
+
+    while (node !== null) {
+      this.__removeEmailNode(node, true)
+      node = node.prev
+    }
+
+    emails.forEach(this.addValue.bind(this))
   }
 
   __buildNode () {
@@ -69,7 +91,8 @@ export default class EmailsInput {
     } else {
       // a user has already cleared the whole input and clicks backspace key
       if (event.keyCode === 8 && this.currentNode.value.length === 0) {
-        this.__removeLastValue()
+        event.preventDefault()
+        if (this.lastEmailNode) { this.__removeEmailNode(this.lastEmailNode) }
       }
     }
   }
@@ -87,17 +110,31 @@ export default class EmailsInput {
     pastedValues.forEach(value => { this.addValue(value) })
   }
 
-  __removeLastValue () {
-    if (this.values.length === 0) { return }
-
-    const indexOfLastChild = this.values.length - 1
-    this.values.length -= 1
-
-    this.__removeNode(indexOfLastChild)
+  __onChange () {
+    this.options.onChange(this.emails({}))
   }
 
-  __removeNode (index) {
-    const nodeToRemove = this.containerNode.children[index]
-    if (nodeToRemove) { nodeToRemove.remove() }
+  __removeEmailNode (emailNode, silently = false) {
+    const nextNode = emailNode.next
+
+    if (nextNode) {
+      nextNode.prev = emailNode.prev
+    }
+
+    const prevNode = emailNode.prev
+    if (prevNode) {
+      prevNode.next = nextNode
+    }
+
+    if (emailNode === this.lastEmailNode) {
+      this.lastEmailNode = prevNode
+    }
+
+    emailNode.htmlNode.remove()
+    delete this.values[emailNode.value]
+
+    if (!silently) {
+      this.__onChange()
+    }
   }
 }

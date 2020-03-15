@@ -23,7 +23,7 @@ describe('EmailNode', () => {
       const containerClassName = 'container-sdfasdfsdf'
       const removeBtnClassName = 'remove-btn'
 
-      const component = new EmailNode('hello@gmail.com', { containerClassName, removeBtnClassName })
+      const component = new EmailNode('hello@gmail.com', null, null, { containerClassName, removeBtnClassName })
 
       document.body.innerHTML = "<div id='test'></div>"
 
