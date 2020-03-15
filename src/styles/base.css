@@ -5,3 +5,15 @@ body {
 h1 {
   color: hotpink;
 }
+
+#emails-input{
+  min-height: 300px;
+  min-width: 300px;
+
+}
+
+.email-node__remove-email{
+  background-color: blue;
+  min-width: 20px;
+  min-height: 20px;
+}
