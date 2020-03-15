@@ -41,6 +41,12 @@ export default class EmailsInput {
     return nodes.map((emailNode) => (emailNode.value))
   }
 
+  setEmails (emails) {
+    this.values.forEach(node => { node.htmlNode.remove() })
+    this.values = []
+    emails.forEach((email) => this.addValue(email))
+  }
+
   __buildNode () {
     const input = document.createElement('input')
     input.setAttribute('autocomplete', 'off')
