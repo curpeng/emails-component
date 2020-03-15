@@ -29,11 +29,16 @@ export default class EmailsInput {
   addValue (value) {
     if (value.trim().length === 0) { return }
 
-    const email = new EmailNode(value)
+    const emailNode = new EmailNode(value)
 
-    this.values.push(value)
-    this.containerNode.insertBefore(email.htmlNode, this.containerNode.lastChild)
+    this.values.push(emailNode)
+    this.containerNode.insertBefore(emailNode.htmlNode, this.containerNode.lastChild)
     this.currentNode.value = ''
+  }
+
+  emails ({ onlyValid = false }) {
+    const nodes = onlyValid ? this.values.filter((emailNode) => emailNode.isValid) : this.values
+    return nodes.map((emailNode) => (emailNode.value))
   }
 
   __buildNode () {
